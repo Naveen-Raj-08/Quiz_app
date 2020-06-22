@@ -8,7 +8,7 @@ class App extends Component {
       answer: [],
       currentIndex: 0,
       options: [],
-      score: 5,
+      score: 0,
     };
   }
   componentDidMount() {
@@ -26,14 +26,13 @@ class App extends Component {
     });
   }
   goToNextQuestion() {
-    if (this.state.currentIndex === this.state.answer) {
-      this.setState({
-        score: this.state.score + 1,
-      });
-      this.setState({
-        currentIndex: this.state.currentIndex + 1,
-      });
-    }
+    this.setState({
+      score: this.state.score + 1,
+    });
+    this.setState({
+      currentIndex: this.state.currentIndex + 1,
+    });
+    console.log(this.state.currentIndex);
   }
   checkAnswer(e) {
     if (e.value !== this.state.answer) {
@@ -47,7 +46,7 @@ class App extends Component {
     const { question, options, answer, score } = this.state;
     {
       return (
-        <div className="container">
+        <div className="container-md">
           <h3>
             Your Score is <span className="badge badge-info">{score}</span>
             Points
@@ -56,11 +55,17 @@ class App extends Component {
           <p>{answer}</p>
           <ul>
             {options.map((option) => (
-              <p value="answer" onClick={this.checkAnswer}>
+              <p
+                id="Answer"
+                value="answer"
+                onClick={() => console.log("Clicked..!")}
+              >
                 <li>{option}</li>
               </p>
             ))}
           </ul>
+
+          <button onClick={() => this.goToNextQuestion()}>Next Question</button>
         </div>
       );
     }

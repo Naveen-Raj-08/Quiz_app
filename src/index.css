@@ -12,17 +12,11 @@ code {
     monospace;
 }
 
-.selected {
-  background-color: orange;
+.container {
+  margin: auto;
+  padding: auto;
 }
 
-/* The list of options */
-.options {
-  padding: 8px;
-  border: 2px solid #000;
+.container #Answer {
   cursor: pointer;
-}
-
-ul {
-  list-style-type: none;
 }

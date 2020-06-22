@@ -13,10 +13,5 @@ code {
 }
 
 .container {
-  margin: auto;
-  padding: auto;
-}
-
-.container #Answer {
-  cursor: pointer;
+  margin: 20px 20px;
 }

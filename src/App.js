@@ -5,16 +5,29 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      answer: [],
+      userAns: null,
       currentIndex: 0,
       options: [],
       score: 0,
+      quizEnd: false,
+      disabled: true,
     };
   }
+
   componentDidMount() {
-    this.loadQuestion();
+    setInterval(() => {
+      this.loadQuestion();
+    }, 1000);
   }
 
+  componentDidUpdate() {
+    const { currentIndex } = this.state;
+    this.setState((prevState) => {
+      if (prevState !== currentIndex) {
+        console.log(currentIndex);
+      }
+    });
+  }
   loadQuestion() {
     const { currentIndex } = this.state;
     this.setState(() => {
@@ -26,45 +39,42 @@ class App extends Component {
     });
   }
   goToNextQuestion() {
+    const { userAns, currentIndex, score, answer } = this.state;
     this.setState({
-      score: this.state.score + 1,
+      currentIndex: currentIndex + 1,
     });
-    this.setState({
-      currentIndex: this.state.currentIndex + 1,
-    });
-    console.log(this.state.currentIndex);
-  }
-  checkAnswer(e) {
-    if (e.value !== this.state.answer) {
+
+    if (userAns === answer) {
       this.setState({
-        answer: this.state.answer,
+        score: score + 1,
       });
     }
   }
 
+  checkAnswer(answer) {
+    this.setState({
+      userAns: answer,
+      disabled: false,
+    });
+  }
+
   render() {
-    const { question, options, answer, score } = this.state;
+    const { question, options, userAns } = this.state;
     {
       return (
-        <div className="container-md">
-          <h3>
-            Your Score is <span className="badge badge-info">{score}</span>
-            Points
-          </h3>
+        <div className="container">
           <h2>{question}</h2>
-          <p>{answer}</p>
           <ul>
-            {options.map((option) => (
+            {options.map((option, index) => (
               <p
-                id="Answer"
-                value="answer"
-                onClick={() => console.log("Clicked..!")}
+                key={option.id}
+                className={`${userAns === option ? "selecter" : null}`}
+                onClick={() => this.checkAnswer(option)}
               >
-                <li>{option}</li>
+                <li key={option.index}>{option}</li>
               </p>
             ))}
           </ul>
-
           <button onClick={() => this.goToNextQuestion()}>Next Question</button>
         </div>
       );

@@ -9,7 +9,7 @@ class App extends Component {
       currentIndex: 0,
       options: [],
       score: 0,
-      quizEnd: false,
+      quizFinish: false,
       disabled: true,
     };
   }
@@ -17,17 +17,21 @@ class App extends Component {
   componentDidMount() {
     setInterval(() => {
       this.loadQuestion();
-    }, 1000);
+    }, 500);
   }
 
-  componentDidUpdate() {
-    const { currentIndex } = this.state;
-    this.setState((prevState) => {
-      if (prevState !== currentIndex) {
-        console.log(currentIndex);
-      }
-    });
+  shouldComponentUpdate() {
+    return true;
   }
+
+  // componentDidUpdate() {
+  // const { currentIndex } = this.state;
+  // this.setState((prevState) => {
+  //  if (prevState !== currentIndex) {
+  //  console.log(currentIndex);
+  // }
+  // });
+  // }
   loadQuestion() {
     const { currentIndex } = this.state;
     this.setState(() => {
@@ -50,35 +54,68 @@ class App extends Component {
       });
     }
   }
-
   checkAnswer(answer) {
     this.setState({
       userAns: answer,
       disabled: false,
     });
   }
+  quizFinish() {
+    if (this.state.currentIndex === QuizData.length - 1) {
+      this.setState({
+        quizFinish: true,
+      });
+      alert(`Test is Over and You got ${this.state.score} Points`);
+    }
+  }
 
   render() {
-    const { question, options, userAns } = this.state;
-    {
-      return (
-        <div className="container">
-          <h2>{question}</h2>
-          <ul>
-            {options.map((option, index) => (
-              <p
-                key={option.id}
-                className={`${userAns === option ? "selecter" : null}`}
-                onClick={() => this.checkAnswer(option)}
-              >
-                <li key={option.index}>{option}</li>
-              </p>
-            ))}
-          </ul>
-          <button onClick={() => this.goToNextQuestion()}>Next Question</button>
-        </div>
-      );
-    }
+    const {
+      currentIndex,
+      question,
+      options,
+      userAns,
+      disabled,
+      score,
+    } = this.state;
+
+    return (
+      <div className="container">
+        <h6>Question No: {currentIndex + 1}</h6>
+        <p id="Score">
+          Your Score is <span className="badge badge-success"> {score} </span>{" "}
+          Points
+        </p>
+        <hr />
+        <h2>{question}</h2>
+        <ul>
+          {options.map((option, index) => (
+            <p
+              id="options"
+              key={option.id}
+              className={`${userAns === option ? "selected" : null}`}
+              onClick={() => this.checkAnswer(option)}
+            >
+              <li key={option.index}>{option}</li>
+            </p>
+          ))}
+        </ul>
+        {currentIndex < QuizData.length - 1 && (
+          <button
+            className="btn btn-secondary"
+            disabled={disabled}
+            onClick={() => this.goToNextQuestion()}
+          >
+            Next Question
+          </button>
+        )}
+        {currentIndex === QuizData.length - 1 && (
+          <button className="btn btn-primary" onClick={() => this.quizFinish()}>
+            Finish
+          </button>
+        )}
+      </div>
+    );
   }
 }
 export default App;

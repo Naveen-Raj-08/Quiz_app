@@ -13,5 +13,33 @@ code {
 }
 
 .container {
-  margin: 20px 20px;
+  margin: 20px;
+  padding: 5px 10px;
+}
+.container #Score {
+  text-align: right;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+}
+#options {
+  width: 200px;
+  padding: 4px;
+  justify-content: center;
+  border-radius: 10px;
+  text-align: center;
+  color: black;
+  list-style: none;
+  cursor: pointer;
+}
+.container #options:hover {
+  background-color: dodgerblue;
+  color: whitesmoke;
+}
+
+.container button {
+  font-weight: 500;
+  background-color: mediumblue;
+}
+.container button:hover {
+  background-color: green;
 }

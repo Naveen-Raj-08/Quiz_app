@@ -61,14 +61,21 @@ class App extends Component {
     });
   }
   quizFinish() {
-    if (this.state.currentIndex === QuizData.length - 1) {
+    const { currentIndex, userAns, answer, score } = this.state;
+    if (currentIndex === QuizData.length - 1) {
       this.setState({
         quizFinish: true,
       });
+      if (userAns === answer && score === 4) {
+        this.setState({
+          score: score + 1,
+        });
+      }
+    }
+    if (score === 5) {
       alert(`Test is Over and You got ${this.state.score} Points`);
     }
   }
-
   render() {
     const {
       currentIndex,
